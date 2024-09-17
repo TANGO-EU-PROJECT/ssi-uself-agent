@@ -24,7 +24,7 @@ spec:
         imagePullPolicy: Always
         env: 
         - name: uself_server
-          value: http://newserver.test.com  
+          value: http://ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
         ports:
         - containerPort: 8888
 ---
