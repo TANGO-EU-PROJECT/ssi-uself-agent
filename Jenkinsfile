@@ -8,8 +8,8 @@ pipeline {
         stage("Deployment"){
        	    steps {
                withKubeConfig([credentialsId: 'K8s-config-file' , serverUrl: 'https://167.235.66.115:6443', namespace:'tango-development']) {
-                 sh 'kubectl create -f deployment-uself-agent.yml'
-                 sh 'kubectl create -f uself-agent-ingress.yml'
+                 sh 'kubectl create -f deployment-uself-agent.yaml'
+                 sh 'kubectl create -f uself-agent-ingress.yaml'
                  sh 'kubectl get pods'
                }
  
