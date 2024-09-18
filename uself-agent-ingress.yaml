@@ -2,19 +2,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: uself-agent-service-ingress
-  namespace: ips-testing1
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /api/$2 
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-    - host: uself-agent.ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
-      http:
-        paths:
-          - path: /api(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: uself-agent-service
-                port:
-                  number: 80
+  - host: uself-agent.ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
+    http:
+      paths:
+      - path: (/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: uself-agent-service
+            port:
+              number: 8888
+  tls:
+  - hosts:
+    - uself-agent.ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
+    secretName: test-rest-cert-tls
