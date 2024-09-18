@@ -24,21 +24,21 @@ spec:
         imagePullPolicy: Always
         env: 
         - name: uself_server
-          value: http://ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
+          value: https://uselfagent.testing1.k8s-cluster.tango.rid-intrasoft.eu
         ports:
         - containerPort: 8888
 ---
 apiVersion: v1
 kind: Service 
 metadata:
-  name: uself-agent
+  name: uself-agent-service
   namespace: ips-testing1
   labels:
     app: uself-agent
 spec:
   selector:
     app: uself-agent
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 80
     targetPort: 8888
