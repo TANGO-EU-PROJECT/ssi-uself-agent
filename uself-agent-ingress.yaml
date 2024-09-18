@@ -10,7 +10,7 @@ spec:
   - host: uself-agent.ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
     http:
       paths:
-      - path: (/|$)(.*)
+      - path: /(/|$)(.*)
         pathType: Prefix
         backend:
           service:
