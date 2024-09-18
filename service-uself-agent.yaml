@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     app: uself-agent
-  type: ClusterIP
+  type: NodePort
   ports:
   - port: 8888
     targetPort: 8888
