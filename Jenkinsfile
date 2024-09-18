@@ -16,6 +16,7 @@ pipeline {
                  sh 'sleep 120' 
                  sh 'kubectl describe deployment uself-agent -n ips-testing1'  
                  sh 'kubectl logs -l app=uself-agent -n ips-testing1'
+                 sh 'kubectl get pods -n ips-testing1'  
                }
  
             }
