@@ -11,10 +11,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - uself-agent.ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
+    - uself-agent.k8s-cluster.tango.rid-intrasoft.eu
     secretName: uself-agent-cert-tls
   rules:
-  - host: uself-agent.ips-testing1.k8s-cluster.tango.rid-intrasoft.eu
+  - host: uself-agent.k8s-cluster.tango.rid-intrasoft.eu
     http:
       paths:
       - backend:
