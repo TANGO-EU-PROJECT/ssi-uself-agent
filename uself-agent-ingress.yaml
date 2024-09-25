@@ -2,7 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   labels:
-    components: uself-agent
+    #components: uself-agent
+    app: uself-agent
   name: uself-agent-service-ingress
   namespace: ips-testing1
   annotations:
