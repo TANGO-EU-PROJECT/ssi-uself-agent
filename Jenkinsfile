@@ -12,6 +12,9 @@ pipeline {
                  sh 'kubectl apply -f service-uself-agent.yaml'
                  sh 'kubectl apply -f uself-agent-ingress.yaml'
                  sh 'kubectl get pods -n ips-testing1' 
+                 sh 'kubectl describe ingress -l component=ssi-wallet'
+                 sh 'kubectl describe pod -l component=ssi-wallet'
+                 sh 'kubectl describe service -l component=ssi-wallet'
                }
  
             }
