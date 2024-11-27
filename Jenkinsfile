@@ -20,4 +20,12 @@ pipeline {
             }
         }
     }
+    stage("Show uself-agent pod logs"){
+       	        steps {
+                   withKubeConfig([credentialsId: 'K8s-config-file' , serverUrl: 'https://167.235.66.115:6443', namespace:'ips-testing1']) {
+                     sh 'kubectl logs -l app=uself-agent --all-containers --ignore-errors --tail 1000'
+                   }
+                }
+    }
+
 }
