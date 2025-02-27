@@ -19,11 +19,22 @@ spec:
       - name: regcred
       containers:
       - name: uself-agent
-        image: harbor.tango.rid-intrasoft.eu/eviden/rd/uself/uself-agent:v0.4.2
+        image: harbor.tango.rid-intrasoft.eu/eviden/rd/uself/uself-agent:v0.4.9
         imagePullPolicy: Always
         env: 
+        - name: LETSENCRYPT_HOST
+          value: uself-agent.k8s-cluster.tango.rid-intrasoft.eu
+        - name: VIRTUAL_HOST
+          value: uself-agent.k8s-cluster.tango.rid-intrasoft.eu
+        - name: VIRTUAL_PORT
+          value: "8888"
+        - name: spring_data_redis_host
+          value: uself-redis-local
+        - name: uself_did_method
+          value: DID_KEY_P256
+        - name: uself_preload
+          value: tango
         - name: uself_server
           value: https://uself-agent.k8s-cluster.tango.rid-intrasoft.eu
         ports:
         - containerPort: 8888
-
