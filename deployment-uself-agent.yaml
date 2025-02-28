@@ -29,7 +29,7 @@ spec:
         - name: VIRTUAL_PORT
           value: "8888"
         - name: spring_data_redis_host
-          value: uself-redis-local
+          value: redis-uself-agent.ips-testing1.svc.cluster.local          # uself-redis-local
         - name: uself_did_method
           value: DID_KEY_P256
         - name: uself_preload
