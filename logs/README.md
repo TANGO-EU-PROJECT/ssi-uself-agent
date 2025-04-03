@@ -1,0 +1,1 @@
+The [logAnonymizer.html](https://github.com/TANGO-EU-PROJECT/ssi-uself-agent/blob/main/logs/logAnonymizer.html) is a javascript web tool to anonymize SSI log files of personal data including within ID Tokens, Access Tokens, VC JWTs and VP Tokens. It can be downloaded and run in a browser.
