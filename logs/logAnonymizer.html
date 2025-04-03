@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Anonymizer</title>
+    <style>
+        #drop-area {
+            border: 2px dashed #ccc;
+            padding: 50px;
+            text-align: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Log Anonymizer</h1>
+    <div id="drop-area">
+        <p>Drag and drop a log file here, or click to select a file.</p>
+        <input type="file" id="file-input" style="display: none;">
+    </div>
+    <div id="output-area"></div>
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const outputArea = document.getElementById('output-area');
+
+        dropArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropArea.style.backgroundColor = '#f0f0f0';
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.backgroundColor = '';
+        });
+
+        dropArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropArea.style.backgroundColor = '';
+            const file = event.dataTransfer.files[0];
+            processFile(file);
+        });
+
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            processFile(file);
+        });
+
+        function processFile(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const logContent = event.target.result;
+                const modifiedLog = anonymizeLog(logContent);
+                downloadLog(modifiedLog, file.name.replace(/\.[^/.]+$/, "") + "_anon.log");
+            };
+            reader.readAsText(file);
+        }
+
+        function anonymizeLog(logContent) {
+    const lines = logContent.split('\n');
+    return lines.map(line => {
+        let modifiedLine = line;
+
+        // Check for /userinfo/{type}/{id} and replace {id}
+        const userInfoRegex = /(https?:\/\/[^\/]+\/userinfo\/[^/]+\/)([^"]+)/g;
+        modifiedLine = modifiedLine.replace(userInfoRegex, '$1personal_data_removed');
+
+        const jwsRegex = /([a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)|([a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)/g;
+        modifiedLine = modifiedLine.replace(jwsRegex, (match) => {
+            const parts = match.split('.');
+            if (parts.length === 2 || parts.length === 3) {
+                try {
+                    const payload = JSON.parse(base64urlDecode(parts[1]));
+                    let modified = false;
+
+                    const personalKeys = ["address", "passportNumber", "familyName", "givenName", "dateOfBirth", "placeOfBirth", "gender", "authority", "nationality", "countryCode", "passportPhoto", "dateOfExpiry", "dateOfIssue", "roles", "name", "given_name", "family_name","preferred_username", "email"];
+
+                    if (payload.user_info) {
+                        Object.keys(payload.user_info).forEach(key => {
+                            payload.user_info[key] = "personal_data_removed";
+                            modified = true;
+                        });
+                    }
+
+                    if (payload.claims && payload.claims.userInfo) {
+                        Object.keys(payload.claims.userInfo).forEach(key => {
+                            payload.claims.userInfo[key] = "personal_data_removed";
+                            modified = true;
+                        });
+                    }
+
+                    const credentialSubject = (payload.vc && payload.vc.credentialSubject) ? payload.vc.credentialSubject : (payload.verifiableCredential && payload.verifiableCredential.credentialSubject) ? payload.verifiableCredential.credentialSubject : null;
+
+                    if (credentialSubject) {
+                        Object.keys(credentialSubject).forEach(key => {
+                            credentialSubject[key] = "personal_data_removed";
+                            modified = true;
+                        });
+                    }
+
+                    const rootPersonalKeys = ["address", "passportNumber", "familyName", "givenName", "dateOfBirth", "placeOfBirth", "gender", "authority", "nationality", "countryCode", "passportPhoto", "dateOfExpiry", "dateOfIssue"];
+                    rootPersonalKeys.forEach(key => {
+                        if (payload.hasOwnProperty(key)) {
+                            payload[key] = "personal_data_removed";
+                            modified = true;
+                        }
+                    });
+
+                    if (payload.vp && payload.vp.verifiableCredential && Array.isArray(payload.vp.verifiableCredential)) {
+                        payload.vp.verifiableCredential = payload.vp.verifiableCredential.map(vcJWS => {
+                            const vcParts = vcJWS.split('.');
+                            if (vcParts.length === 3) {
+                                try {
+                                    const vcPayload = JSON.parse(base64urlDecode(vcParts[1]));
+                                    const vcCredentialSubject = (vcPayload.vc && vcPayload.vc.credentialSubject) ? vcPayload.vc.credentialSubject : null;
+                                    if (vcCredentialSubject) {
+                                        Object.keys(vcCredentialSubject).forEach(key => {
+                                            vcCredentialSubject[key] = "personal_data_removed";
+                                            modified = true;
+                                        });
+                                        const modifiedVcPayloadEncoded = base64urlEncode(JSON.stringify(vcPayload));
+                                        return `${vcParts[0]}.${modifiedVcPayloadEncoded}.${vcParts[2]}`;
+                                    }
+                                } catch (vcError) {
+                                    console.error('Error processing VC JWS:', vcError);
+                                }
+                            }
+                            return vcJWS;
+                        });
+                        modified = true;
+                    }
+
+                    if (modified) {
+                        const modifiedPayloadEncoded = base64urlEncode(JSON.stringify(payload));
+                        if (parts.length === 2) {
+                            return `${parts[0]}.${modifiedPayloadEncoded}.`;
+                        } else {
+                            return `${parts[0]}.${modifiedPayloadEncoded}.${parts[2]}`;
+                        }
+                    } else {
+                        return match;
+                    }
+                } catch (error) {
+                    console.error('Error processing JWS:', error);
+                    return match;
+                }
+            } else {
+                return match;
+            }
+        });
+
+        return modifiedLine;
+    }).join('\n');
+}
+
+        function base64urlDecode(str) {
+            return atob(str.replace(/-/g, '+').replace(/_/g, '/'));
+        }
+
+        function base64urlEncode(str) {
+            return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        function downloadLog(content, filename) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+</body>
+</html>
