@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service 
 metadata:
   name: uself-agent-service
-  namespace: ips-testing1
+  namespace: smart-hospitality
   labels:
     app: uself-agent
 spec:
