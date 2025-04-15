@@ -5,10 +5,10 @@ metadata:
     components: uself-agent
     #app: uself-agent
   name: uself-agent-service-ingress
-  namespace: ips-testing1
+  namespace: smart-hospitality
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    #nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     nginx.ingress.kubernetes.io/client-body-buffer-size: 64k
@@ -20,21 +20,21 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
     nginx.ingress.kubernetes.io/proxy-read-timeout: "1000"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "1000"
-    nginx.ingress.kubernetes.io/server-snippet: | # this is where the magic happens
-      client_header_buffer_size 100k;
-      large_client_header_buffers 4 256k;
-      connection_pool_size 256k;
-      proxy_buffer_size 128k;
-      proxy_buffers 8 256k;
-      proxy_busy_buffers_size 256k;
+    #nginx.ingress.kubernetes.io/server-snippet: | # this is where the magic happens
+      #client_header_buffer_size 100k;
+      #large_client_header_buffers 4 256k;
+      #connection_pool_size 256k;
+      #proxy_buffer_size 128k;
+      #proxy_buffers 8 256k;
+      #proxy_busy_buffers_size 256k;
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - uself-agent.k8s-cluster.tango.rid-intrasoft.eu
+    - uself-agent.tango.nadiaplatform.com
     secretName: uself-agent-cert-tls
   rules:
-  - host: uself-agent.k8s-cluster.tango.rid-intrasoft.eu
+  - host: uself-agent.tango.nadiaplatform.com
     http:
       paths:
       - backend:
