@@ -16,7 +16,7 @@ spec:
         app: uself-agent
     spec:
       imagePullSecrets:
-      - name: regcred
+      - name: regcred-prod
       containers:
       - name: uself-agent
         image: harbor.tango.rid-intrasoft.eu/eviden/rd/uself/uself-agent:v0.4.9
