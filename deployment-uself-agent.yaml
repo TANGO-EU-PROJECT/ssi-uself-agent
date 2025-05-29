@@ -34,6 +34,8 @@ spec:
           value: DID_KEY_P256
         - name: uself_preload
           value: tango
+        - name: uself_loadDir
+          value: /data
         - name: uself_server
           value: https://uself-agent.k8s-cluster.tango.rid-intrasoft.eu
         ports:
