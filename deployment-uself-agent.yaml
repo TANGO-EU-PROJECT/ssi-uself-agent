@@ -23,9 +23,9 @@ spec:
         imagePullPolicy: Always
         env: 
         - name: LETSENCRYPT_HOST
-          value: uself-agent.tango.metro.com.gr
+          value: uself-agent-tango.metro.com.gr
         - name: VIRTUAL_HOST
-          value: uself-agent.tango.metro.com.gr
+          value: uself-agent-tango.metro.com.gr
         - name: VIRTUAL_PORT
           value: "8888"
         - name: spring_data_redis_host
@@ -37,6 +37,6 @@ spec:
         - name: uself_loadDir
           value: /data
         - name: uself_server
-          value: https://uself-agent.tango.metro.com.gr
+          value: https://uself-agent-tango.metro.com.gr
         ports:
         - containerPort: 8888
