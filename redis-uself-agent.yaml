@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-uself-agent
-  namespace: ips-testing1
+  namespace: retail
 spec:
   selector:
     app: redis-uself-agent
@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-uself-agent
-  namespace: ips-testing1
+  namespace: retail
   labels:
     app: redis-uself-agent
 spec:
@@ -31,7 +31,7 @@ spec:
         app: redis-uself-agent
     spec:
       containers:
-      - name: redis-uself-agent    #hostname : ips-testing1.redis-uself-agent
+      - name: redis-uself-agent    #hostname : metro
         image: redis:alpine
         imagePullPolicy: Always
         ports: 
