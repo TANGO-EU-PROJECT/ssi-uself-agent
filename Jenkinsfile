@@ -24,7 +24,7 @@ pipeline {
     
         stage("Show uself-agent pod logs"){
        	        steps {
-                   withKubeConfig([credentialsId: 'Metro-K8s-config-file' , serverUrl: 'https://213.249.10.1505:6443', namespace:'retail']) {
+                   withKubeConfig([credentialsId: 'Metro-K8s-config-file' , serverUrl: 'https://213.249.10.150:6443', namespace:'retail']) {
                      sh 'kubectl logs -l app=uself-agent --all-containers --ignore-errors --tail 1000'
                    }
                 }
