@@ -19,7 +19,7 @@ spec:
       - name: retail
       containers:
       - name: uself-agent
-        image: harbor.tango.rid-intrasoft.eu/eviden/rd/uself/uself-agent:v0.4.12
+        image: harbor.tango.rid-intrasoft.eu/eviden/rd/uself/uself-agent:v0.4.12.1
         imagePullPolicy: Always
         env: 
         - name: LETSENCRYPT_HOST
@@ -35,7 +35,7 @@ spec:
         - name: uself_preload
           value: tango
         - name: uself_loadDir
-          value: /data
+          value: "app/data/tango-data.json"
         - name: uself_server
           value: https://uself-agent-tango.metro.com.gr
         ports:
