@@ -41,7 +41,7 @@ pipeline {
                    withKubeConfig([credentialsId: 'Metro-K8s-config-file' , serverUrl: 'https://213.249.10.150:6443', namespace:'retail']) {
                      sh 'kubectl get pods -n retail'
                      sh 'timeout 120s kubectl logs -n retail -f -l app=uself-agent --all-containers || true'
-                     sh 'kubectl exec -it deploy/uself-agent -- ls /app/data'  
+                     sh 'kubectl exec -it deploy/uself-agent -- pwd'  
                    }
                 }
     }        
