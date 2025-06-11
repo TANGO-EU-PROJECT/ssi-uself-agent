@@ -8,7 +8,7 @@ pipeline {
         stage("Deployment"){
        	    steps {
                withKubeConfig([credentialsId: 'Metro-K8s-config-file' , serverUrl: 'https://213.249.10.150:6443', namespace:'retail']) {
-                 sh 'kubectl apply -f deployment-uself-agent.yaml'
+                 sh 'kubectl delete -f deployment-uself-agent.yaml && kubectl apply -f deployment-uself-agent.yaml'
                  sh 'kubectl apply -f service-uself-agent.yaml'
                  sh 'kubectl apply -f uself-agent-ingress.yaml'
                  sh 'kubectl apply -f redis-uself-agent.yaml'  
@@ -36,6 +36,15 @@ pipeline {
                    }
                 }
     }
+        stage("Show uself-agent pod logs before deployment "){
+       	        steps {
+                   withKubeConfig([credentialsId: 'Metro-K8s-config-file' , serverUrl: 'https://213.249.10.150:6443', namespace:'retail']) {
+                     sh 'kubectl get pods -n retail'
+                     sh 'timeout 120s kubectl logs -n retail -f -l app=uself-agent --all-containers || true'
+                       
+                   }
+                }
+    }        
 
 }
 }
