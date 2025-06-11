@@ -35,7 +35,7 @@ spec:
         - name: uself_preload
           value: tango
         - name: uself_loadDir
-          value: "./app/data"
+          value: "data"
         - name: uself_server
           value: https://uself-agent-tango.metro.com.gr
         ports:
