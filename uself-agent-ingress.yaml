@@ -35,7 +35,7 @@ spec:
     - "*.metro.com.gr"
     secretName: metroingress
   rules:
-  - host: uself-agent.tango-metro.com.gr
+  - host: uself-agent-tango.metro.com.gr
     http:
       paths:
       - backend:
