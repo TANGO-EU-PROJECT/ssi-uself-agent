@@ -33,7 +33,7 @@ spec:
       containers:
       - name: redis-uself-agent    #hostname : metro
         image: redis:alpine
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports: 
           - containerPort: 6379
       restartPolicy: Always
