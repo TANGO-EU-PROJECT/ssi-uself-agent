@@ -11,7 +11,7 @@ pipeline {
                  sh 'kubectl delete -f deployment-uself-agent.yaml && kubectl apply -f deployment-uself-agent.yaml'
                  sh 'kubectl apply -f service-uself-agent.yaml'
                  sh 'kubectl apply -f uself-agent-ingress.yaml'
-                 sh 'kubectl apply -f redis-uself-agent.yaml'  
+                 sh 'kubectl detele -f redis-uself-agent.yaml && kubectl apply -f redis-uself-agent.yaml'  
                  sh 'kubectl get pods -n retail' 
                  sh 'kubectl describe pods -n retail -l app=redis-uself-agent' 
                  sh 'kubectl describe ingress -l component=ssi-wallet'
