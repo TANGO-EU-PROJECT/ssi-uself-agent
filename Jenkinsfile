@@ -8,10 +8,10 @@ pipeline {
         stage("Deployment"){
        	    steps {
                withKubeConfig([credentialsId: 'Metro-K8s-config-file' , serverUrl: 'https://213.249.10.150:6443', namespace:'retail']) {
-                 sh 'kubectl delete -f deployment-uself-agent.yaml && kubectl apply -f deployment-uself-agent.yaml'
-                 sh 'kubectl delete -f service-uself-agent.yaml && kubectl apply -f service-uself-agent.yaml'
-                 sh 'kubectl delete -f uself-agent-ingress.yaml && kubectl apply -f uself-agent-ingress.yaml'
-                 sh 'kubectl delete -f redis-uself-agent.yaml && kubectl apply -f redis-uself-agent.yaml'  
+                 sh 'kubectl apply -f deployment-uself-agent.yaml'
+                 sh 'kubectl apply -f service-uself-agent.yaml'
+                 sh 'kubectl apply -f uself-agent-ingress.yaml'
+                 sh 'kubectl apply -f redis-uself-agent.yaml'  
                  sh 'kubectl get pods -n retail' 
                  sh 'kubectl describe pods -n retail -l app=redis-uself-agent' 
                  sh 'kubectl describe ingress -l component=ssi-wallet'
