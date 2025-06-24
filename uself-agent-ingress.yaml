@@ -22,10 +22,10 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "1000"
     nginx.ingress.kubernetes.io/proxy-buffering: "on"
     nginx.ingress.kubernetes.io/server-snippet: | # this is where the magic happens
-      #client_header_buffer_size 100k;
-      #large_client_header_buffers 4 256k;
+      client_header_buffer_size 100k;
+      large_client_header_buffers 4 256k;
       connection_pool_size 256k;
-      #proxy_buffer_size 128k;
+      proxy_buffer_size 128k;
       proxy_buffers 8 512k;
       proxy_busy_buffers_size 256k;
 spec:
