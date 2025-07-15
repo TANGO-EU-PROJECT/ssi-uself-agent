@@ -5,7 +5,7 @@ metadata:
     components: uself-agent
     #app: uself-agent
   name: uself-agent-service-ingress
-  namespace: ips-testing1
+  namespace: smart-manufacturing
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -31,10 +31,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - uself-agent.k8s-cluster.tango.rid-intrasoft.eu
+    - uself-agent.riastone.eu
     secretName: uself-agent-cert-tls
   rules:
-  - host: uself-agent.k8s-cluster.tango.rid-intrasoft.eu
+  - host: uself-agent.riastone.eu
     http:
       paths:
       - backend:
