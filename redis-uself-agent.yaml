@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-uself-agent
-  namespace: ips-testing1
+  namespace: smart-manufacturing
 spec:
   selector:
     app: redis-uself-agent
@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-uself-agent
-  namespace: ips-testing1
+  namespace: smart-manufacturing
   labels:
     app: redis-uself-agent
 spec:
