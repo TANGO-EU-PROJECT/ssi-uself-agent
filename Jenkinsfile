@@ -8,10 +8,10 @@ pipeline {
         stage("Deployment"){
        	    steps {
                withKubeConfig([credentialsId: 'RIAS-K8s-config-file' , serverUrl: 'https://api.riastone.eu:6443', namespace:'smart-manufacturing']) {
-                 sh 'kubectl apply -f deployment-uself-agent.yaml'
+                 sh 'kubectl delete -f deployment-uself-agent.yaml && kubectl apply -f deployment-uself-agent.yaml'
                  sh 'kubectl apply -f service-uself-agent.yaml'
                  sh 'kubectl apply -f uself-agent-ingress.yaml'
-                 sh 'kubectl apply -f redis-uself-agent.yaml'  
+                 sh 'kubectl apply -f deployment-uself-agent.yaml && kubectl apply -f redis-uself-agent.yaml'  
                  sh 'kubectl get pods -n smart-manufacturing' 
                  sh 'kubectl describe pods -n smart-manufacturing -l app=redis-uself-agent' 
                  sh 'kubectl describe ingress -l component=ssi-wallet'
